@@ -1,0 +1,10 @@
+﻿{
+	"appName": {
+	   "message": "MyDL",
+	   "description": "Notifieur de téléchargements"
+		},
+	"appDesc":{
+		"message": "Notifieur de téléchargements",
+		"description": " application description"
+		}
+}

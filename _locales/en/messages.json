@@ -1,0 +1,10 @@
+{
+	"appName": {
+	   "message": "MyDL",
+	   "appDesc": "Download Notifier"
+		},
+	"appDesc": {
+		"message" :"Download Notifier",
+		"description": " application description"
+		}
+}
