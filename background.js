@@ -1,15 +1,26 @@
-// URIS
+/*
+*   Definitions des variables
+*/
 var adminURI = 'mongodb://admin:admin@ds035750.mongolab.com:35750/mydl';
 var chromiumURI ='mongodb://chromeExt:chromium@ds035750.mongolab.com:35750/mydl';
 var testURI = "https://api.mongolab.com/api/1/databases/tp_secu/collections/adminDirectory";
 var mydlURI = "https://api.mongolab.com/api/1/databases/mydl/collections/";
 var userCol = "users";
 var currdlCol = "currentdl"
-
 var serverUrl = "http://localhost:8080";
+
+
+/*
+*   Ajout des évenements
+*/
 document.getElementById("log").addEventListener("click",login, false);
 document.getElementById("reg").addEventListener("click",signup,false);
 document.getElementById("fpw").addEventListener("click",resetPassword,false);
+
+/*
+* Tests
+* TODO: CLean This
+*/
 function testDL(){
   chrome.downloads.download({
     url: "http://nbstatic.s3.amazonaws.com/img/flags-iso/flat/32/fr.png",
@@ -26,14 +37,19 @@ chrome.downloads.onCreated.addListener(function (e) {
   console.log("New Download created. Id:"+e.id+", URL: "+e.url+", fileSize:"+e.fileSize);
 });
 
+/*
+* Definitions d'objets métiers
+*/
 var User = function(login,password,email){};
     User.prototype;
     User.prototype.login = 'login';
     User.prototype.password = 'password';
     User.prototype.email = 'email';
   
-
-
+/*
+* Fonctions 
+* TODO: CT and split the functions (technical/ functionnal)
+*/
 function login(){
 //envoyer une request GET sur les infos données
  console.log("Coucou");
