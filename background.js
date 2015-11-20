@@ -7,12 +7,13 @@ var testURI = "https://api.mongolab.com/api/1/databases/tp_secu/collections/admi
 var mydlURI = "https://api.mongolab.com/api/1/databases/mydl/collections/";
 var userCol = "users";
 var currdlCol = "currentdl"
-var serverUrl = "http://localhost:8080";
+var serverUrl = "http://localhost:8054";
 
 
 /*
 *   Ajout des évenements
 */
+
 document.getElementById("log").addEventListener("click",login, false);
 document.getElementById("reg").addEventListener("click",signup,false);
 document.getElementById("fpw").addEventListener("click",resetPassword,false);
@@ -40,24 +41,21 @@ chrome.downloads.onCreated.addListener(function (e) {
 /*
 * Definitions d'objets métiers
 */
-var User = function(login,password,email){};
-    User.prototype;
-    User.prototype.login = 'login';
-    User.prototype.password = 'password';
-    User.prototype.email = 'email';
-  
+function User(email, password){
+	this.email = email;
+	this.password = password;
+}
 /*
 * Fonctions 
 * TODO: CT and split the functions (technical/ functionnal)
 */
 function login(){
 //envoyer une request GET sur les infos données
- console.log("Coucou");
-  var login = document.getElementById('mail');
-  var password = document.getElementById('pass');
-  user = new User(login,pass,'');
-  myJson = JSON.stringify(user);
-  console.log(myJson);
+  var email = document.getElementById('userMail').value;
+  var password = document.getElementById('userPassword').value;
+  var user = new User(email,password);
+  var myJson = JSON.stringify(user);
+  console.log('json='+myJson);
   postRequest(myJson,readResponse,"auth");
  }
 
@@ -65,9 +63,6 @@ function resetPassword(){
   console.log("Ton password va être reset connard");
 }
 
-function checkLogin(){
-
-}
 function getXMLHttpRequest() {
   var xhr = null;
   
@@ -103,23 +98,20 @@ function getRequest(callback){
 }
 
 function postRequest(jsonData,callback,param){
-  console.log("Ok on est dans le post");
+  console.log("Trying Post Request : <server url = "+serverUrl+"> <param = "+param+">");
   var xhr = getXMLHttpRequest();
   xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-            callback(xhr.responseText);
             console.log(xhr);    
         }
     };
 
-  xhr.open("POST",serverUrl+'?'+param, true);
-  var myJSONString = JSON.stringify(jsonData);
-  var myEscapedJSONString = myJSONString.escapeSpecialChars();
-  xhr.send(myEscapedJSONString);
-  console.log(xhr);
-  xhr.setRequestHeader("application/json");
-
-  
+  //xhr.open("POST",serverUrl+'?'+param, true);
+  xhr.open("POST",serverUrl, true);
+ 
+  var myEscapedJSONString = jsonData.escapeSpecialChars();
+  xhr.setRequestHeader("Content-Type","application/json");
+  xhr.send(myEscapedJSONString); 
 }
 String.prototype.escapeSpecialChars = function() {
     return this.replace(/\\n/g, "\\n")

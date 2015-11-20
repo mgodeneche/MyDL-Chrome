@@ -3,12 +3,12 @@
 // beta channel.
 var bkg = chrome.extension.getBackgroundPage();
 if (chrome.downloads) {
-	bkg.console.log("ça marche presque connard popu")
+	bkg.console.log("Chrome Download Test :")
   // Start searching ASAP, don't wait for onload.
   DownloadManager.loadItems();
 
   chrome.downloads.onCreated.addListener(function(item) {
-		bkg.console.log("Trou du cul va")
+		bkg.console.log("Test Chrome DOwnload OK")
   });
 
   chrome.downloads.onChanged.addListener(function(delta) {
