@@ -61,6 +61,9 @@ function login(){
 
 function resetPassword(){
   console.log("Ton password va être reset connard");
+  var email = document.getElementById('userMail').value;
+  var myJson = JSON.stringify(email);
+  postRequest(myJson,readResponse,"reset");
 }
 
 function getXMLHttpRequest() {
@@ -98,16 +101,16 @@ function getRequest(callback){
 }
 
 function postRequest(jsonData,callback,param){
-  console.log("Trying Post Request : <server url = "+serverUrl+"> <param = "+param+">");
+  console.log("Trying Post Request : "+serverUrl);
   var xhr = getXMLHttpRequest();
   xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-            console.log(xhr);    
+            callback(xhr);    
         }
     };
 
-  //xhr.open("POST",serverUrl+'?'+param, true);
-  xhr.open("POST",serverUrl, true);
+  xhr.open("POST",serverUrl+'/'+param, true);
+  //xhr.open("POST",serverUrl, true);
  
   var myEscapedJSONString = jsonData.escapeSpecialChars();
   xhr.setRequestHeader("Content-Type","application/json");
@@ -133,9 +136,9 @@ function readData(sData) {
 
 }
 function readResponse(sData){
-  console.log(sData);
+  //console.log(sData);
   var jsonData = JSON.parse(sData);
-  console.log(jsonData);
+  console.log(sData.responseText);
 }
 
 function conn(){

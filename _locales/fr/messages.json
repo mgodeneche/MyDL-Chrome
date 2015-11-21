@@ -6,5 +6,13 @@
 	"appDesc":{
 		"message": "Notifieur de téléchargements",
 		"description": " application description"
-		}
+		},
+	"connFail":{
+		"message" : "Connexion échouée, recommencez s'il vous plait",
+		"description" : "message for connFail"
+	    },
+	"connSuccess":{
+		"message" : "Connexion réussie ! Heureux de vous revoir !",
+		"description" : "message for connSuccess"
+	}
 }
