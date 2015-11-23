@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="../css/pop_out.css" type="text/css" />
+   
+</head>
+
+<body class="container cf div-table">
+    <ul>
+        <li>
+            <img src="../public/icon.png" id="logo"> <span id="logoText" class="xi">MyDL </span>
+        </li>
+    </ul>
+<!-- DONT EDIT ABOVE -->
+<div id='main' class="visible">
+    <form method='post' target="register.html">
+        <ul>
+            <li>
+                <input type="email" name="userMail" id="userMail" placeholder="yourname@email.com" required>
+            </li>
+            <li>
+                <input type="password" name="userPassword" id="userPassword" placeholder="password" required>
+            </li>
+            <li>
+                <input type="submit" class="blue" id="log" value="Login" onclick="registerCall()"> 
+                <input type="submit" class="green" id="reg" value="Register">
+                <input type="submit" class="red" id="fpw" value="Forgot?">
+            </li>
+        </ul>
+    </form>
+</div>
+<div id='register' style='display:none'>
+    <form method='post' target="#">
+        <ul>
+            <li>
+                <input type="email" name="userMail" id="userMail" placeholder="yourname@email.com" required>
+            </li>
+            <li>
+                <input type="email" name="confirmMail" id="confirmMail" placeholder="confirm yourname@email.com" required>
+            </li>
+            <li>
+                <input type="password" name="userPassword" id="userPassword" placeholder="password" required>
+            </li>
+             <li>
+                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="confirm your Password" required>
+            </li>
+            <li>
+                <input type="submit" class="blue" id="registerBack" value="Back">   
+                <input type="submit" class="green" id="reg" value="Register">
+                <input type="submit" class="red" id="fpw" value="Reset">
+            </li>
+        </ul>
+    </form>
+</div>
+<div id='reset' style='display:none'>
+    <form method='post' target="#">
+        <ul>
+            <li>
+                <input type="email" name="userMail" id="userMail" placeholder="yourname@email.com" required>
+            </li>
+                <input type="submit" class="blue" id="resetB    ack" value="Back">
+                <input type="submit" class="red" id="fpw" value="Reinitialiser">
+            </li>
+        </ul>
+    </form>
+</div>
+<script src="../js/background.js"></script>
+  
+</body>
+</html>

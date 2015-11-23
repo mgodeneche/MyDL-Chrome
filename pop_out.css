@@ -1,13 +1,6 @@
-@font-face { font-family: prokofievei; src: url('prokofievei.ttf'); } 
-@font-face { font-family: AppleSpice;src: url('AppleSpice.ttf');}
-@font-face { font-family: DOTMATRI;src: url('DOTMATRI.TTF');}
-@font-face { font-family: LiquidCrystal-Normal;src: url('LiquidCrystal-Normal.otf');}
-/*@font-face {
-  font-family: "Whatever Font";
-  src: url("http://yourdomain/WhateverFont") format("truetype");
-  font-style: normal;
-  font-weight: normal;
-}*/
+
+@font-face { font-family: AppleSpice;src: url('../public/AppleSpice.ttf');}
+
 .container{
 	background-color:#006699;
 		height: 170px;
@@ -20,6 +13,7 @@
 	height: 50px;
 	width: 50px;
 }
+
 #logoText{
     position:relative;
 	color: white;
@@ -29,15 +23,6 @@
 }
 .xi{
     font-family: AppleSpice;
-}
-.dotmatrix{
-    font-family: DOTMATRI;
-}
-.liquid{
-    font-family: LiquidCrystal-Normal;
-}
-.prokofievei{
-    font-family: prokofievei;
 }
 input:required {
 	border: 1px solid yellow;
