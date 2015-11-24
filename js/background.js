@@ -10,13 +10,15 @@ var currdlCol = "currentdl"
 var serverUrl = "http://localhost:8054";
 
 
+
+mainCall();
+chrome.downloads.onCreated.addListener(function (e) {
+  //FAIRE UNE PUTAIN DE POST REQUEST. MERDE.
+  console.log("New Download created. Id:"+e.id+", URL: "+e.url+", fileSize:"+e.fileSize);
+});
 /*
 *   Ajout des évenements
 */
-
-document.getElementById("log").addEventListener("click",login, false);
-document.getElementById("reg").addEventListener("click",registerCall,false);
-document.getElementById("fpw").addEventListener("click",resetCall,false);
 
 function registerCall(){
   document.getElementById("main").style.display = "none";
@@ -57,11 +59,6 @@ function testDL(){
     }
   });
 }
-chrome.downloads.onCreated.addListener(function (e) {
-  //FAIRE UNE PUTAIN DE POST REQUEST. MERDE.
-  console.log("New Download created. Id:"+e.id+", URL: "+e.url+", fileSize:"+e.fileSize);
-});
-
 /*
 * Definitions d'objets métiers
 */
