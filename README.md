@@ -1,3 +1,3 @@
-# Node.js Hello World app
+#MyDL 
 
-This is a barebones Node.js app using the [Express](http://expressjs.com/) framework.
+This is a Chrome Extension designed to handle downloads notification. You don't want to wait for a long download ? Receive a notification on your favourite devices to know when it's ended ! 
