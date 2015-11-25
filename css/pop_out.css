@@ -1,5 +1,5 @@
 
-@font-face { font-family: AppleSpice;src: url('public/AppleSpice.ttf');}
+@font-face { font-family: AppleSpice;src: url('../public/AppleSpice.ttf');}
 
 .container{
 	background-color:#006699;
