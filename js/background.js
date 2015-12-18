@@ -13,7 +13,7 @@ var serverUrl = "http://localhost:8054";
 
 mainCall();
 chrome.downloads.onCreated.addListener(function (e) {
-  //FAIRE UNE PUTAIN DE POST REQUEST. MERDE.
+  //TO DO : Post request to push notif
   console.log("New Download created. Id:"+e.id+", URL: "+e.url+", fileSize:"+e.fileSize);
 });
 /*
@@ -21,28 +21,28 @@ chrome.downloads.onCreated.addListener(function (e) {
 */
 
 function registerCall(){
-  document.getElementById("main").style.display = "none";
-  document.getElementById("register").style.display = "block";
-  document.getElementById("reset").style.display = "none";
-  document.getElementById("registerBack").addEventListener("click",mainCall,false);
-  document.getElementById("reg").addEventListener("click",signup,false);
+	$("#main").hide();
+	$("#register").show();
+	$("#reset").hide();
+	$("#registerBack").click(mainCall());
+	$("#reg").click(signup());
 }
 
 function resetCall(){
-  document.getElementById("main").style.display = "none";
-  document.getElementById("register").style.display = "none";
-  document.getElementById("reset").style.display = "block";
-  document.getElementById("resetBack").addEventListener("click",mainCall,false);
-  document.getElementById("fpw").addEventListener("click",resetPassword,false);
+	$("#main").hide();
+	$("#register").hide();
+	$("#reset").show();
+	$("#resetBack").click(mainCall());
+	$("#fpw").click(resetPassword());
 
 }
 function mainCall(){
-  document.getElementById("main").style.display = "block";
-  document.getElementById("register").style.display = "none";
-  document.getElementById("reset").style.display = "none";
-  document.getElementById("log").addEventListener("click",login, false);
-  document.getElementById("reg").addEventListener("click",registerCall,false);
-  document.getElementById("fpw").addEventListener("click",resetCall,false);
+	$("#main").show();
+	$("#register").hide();
+	$("#reset").hide();
+	$("#log").click(login());
+	$("#reg").click(registerCall());
+	$("#fpw").click(resetCall());
 }
 /*
 * Tests
@@ -54,9 +54,11 @@ function testDL(){
     filename: 'download.zip',
     saveAs: true},
      function(downloadId){
-       if (typeof downloadId !== "undefined"){ // If 'downloadId' is undefined, then there is an error - so making sure it is not so before proceeding.
-         console.log('Download initiated, id is: '+downloadId);
-    }
+		if (typeof downloadId !== "undefined"){ // If 'downloadId' is undefined, then there is an error - so making sure it is not so before proceeding.
+			console.log('Download initiated, id is: '+downloadId);
+		}else{
+			console.log('Error in the download : An unexpected error occured');
+		}
   });
 }
 /*
@@ -72,8 +74,8 @@ function User(email, password){
 */
 function login(){
 //envoyer une request GET sur les infos données
-  var email = document.getElementById('userMail').value;
-  var password = document.getElementById('userPassword').value;
+  var email = $('#userMail').val()
+  var password = $('#userPassword').val();
   var user = new User(email,password);
   var myJson = JSON.stringify(user);
   console.log('json='+myJson);
@@ -88,70 +90,34 @@ function signup(){
     User.prototype.email = 'email';
   user = new User('vlogin','vpassword','vemail');
   console.log(User);
-  console.log(user);
   console.log(User.prototype);
   myJson = JSON.stringify(user);
   postRequest(myJson,readResponse);
 }
 
 function resetPassword(){
-  console.log("Ton password va être reset connard");
+  console.log("Password will be reset");
   var email = document.getElementById('userMail').value;
   var myJson = JSON.stringify(email);
   postRequest(myJson,readResponse,"reset");
 }
 
-function getXMLHttpRequest() {
-  var xhr = null;
-  
-  if (window.XMLHttpRequest || window.ActiveXObject) {
-    if (window.ActiveXObject) {
-      try {
-        xhr = new ActiveXObject("Msxml2.XMLHTTP");
-      } catch(e) {
-        xhr = new ActiveXObject("Microsoft.XMLHTTP");
-      }
-    } else {
-      xhr = new XMLHttpRequest(); 
-    }
-  } else {
-    alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
-    return null;
-  }
-  
-  return xhr;
-}
-
-
-function getRequest(callback){
-  var xhr = getXMLHttpRequest();
-  xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-            callback(xhr.responseText);    
-        }
-    };
-  serverUrl = serverUrl;
-  xhr.open("GET",serverUrl, true);
-  xhr.send(null);
-}
-
 function postRequest(jsonData,callback,param){
-  console.log("Trying Post Request : "+serverUrl);
-  var xhr = getXMLHttpRequest();
-  xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-            callback(xhr);    
-        }
-    };
-
-  xhr.open("POST",serverUrl+'/'+param, true);
-  //xhr.open("POST",serverUrl, true);
- 
-  var myEscapedJSONString = jsonData.escapeSpecialChars();
-  xhr.setRequestHeader("Content-Type","application/json");
-  xhr.send(myEscapedJSONString); 
+	var myEscapedJSONString = jsonData.escapeSpecialChars();
+	console.log("Trying Post Request : "+serverUrl);
+	$.ajax({
+		url:serverUrl+"/"+param,
+		data:myEscapedJSONString,
+		success:function(data){
+			alert(data);
+		},
+		error:function(data){
+			alert(data);
+		}
+	});
 }
-String.prototype.escapeSpecialChars = function() {
+ 
+function escapeSpecialChars(jsonData) {
     return this.replace(/\\n/g, "\\n")
                .replace(/\\'/g, "\\'")
                .replace(/\\"/g, '\\"')
