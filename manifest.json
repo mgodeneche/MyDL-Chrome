@@ -20,8 +20,8 @@
 	{
 		"persistent": false, 
 		"scripts": [
-			"js/background.js"
-			
+			"js/jquery.min.js",
+			"js/background.js"			
 		]
 	}	
 
