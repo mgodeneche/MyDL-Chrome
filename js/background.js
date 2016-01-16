@@ -26,6 +26,35 @@ function registerCall(){
   document.getElementById("reset").style.display = "none";
   document.getElementById("registerBack").addEventListener("click",mainCall,false);
   document.getElementById("reg").addEventListener("click",signup,false);
+  $(document).ready(function () {
+
+    $('#registerForm').validate({ // initialize the plugin
+      errorElement: "div",
+      rules: {
+        userMail: {
+          required: true,
+          email : true
+        },
+        confirmMail: {
+          required: true,
+          email : true
+        },
+        userPassword:{
+          required :true,
+          min : 6
+        },
+        confirmPassword:{
+          required :true,
+          min : 6
+        }
+      },
+      submitHandler: function (form) { // for demo
+        alert('valid form submitted'); // for demo
+        return false; // for demo
+      }
+    });
+
+  });
 }
 
 function resetCall(){
@@ -77,28 +106,33 @@ function login(){
   var user = new User(email,password);
   var myJson = JSON.stringify(user);
   console.log('json='+myJson);
-  postRequest(myJson,readResponse,"auth");
+  postRequest(myJson,"auth",readResponse);
  }
 
 function signup(){
-  var User = function(login,password,email){};
-    User.prototype;
-    User.prototype.login = 'login';
-    User.prototype.password = 'password';
-    User.prototype.email = 'email';
-  user = new User('vlogin','vpassword','vemail');
+  var email = document.getElementById('userMail').value;
+  var confirmEmail = document.getElementById('confirmMail').value;
+  var pass = document.getElementById('userPassword').value;
+  var passConfirm = document.getElementById('confirmPassword').value;
+  if(email!=confirmEmail){
+    document.getElementById('confirmMail').setAttribute()
+  }
+  if(pass!=passConfirm){
+    //erreur pass
+  }
+
+  var user = new User('vlogin',pass,email);
   console.log(User);
   console.log(user);
-  console.log(User.prototype);
-  myJson = JSON.stringify(user);
-  postRequest(myJson,readResponse);
+  var myJson = JSON.stringify(user);
+  postRequest(myJson,"register",readResponse);
 }
 
 function resetPassword(){
   console.log("Ton password va être reset connard");
   var email = document.getElementById('userMail').value;
   var myJson = JSON.stringify(email);
-  postRequest(myJson,readResponse,"reset");
+  postRequest(myJson,"reset",readResponse);
 }
 
 function getXMLHttpRequest() {
@@ -135,7 +169,7 @@ function getRequest(callback){
   xhr.send(null);
 }
 
-function postRequest(jsonData,callback,param){
+function postRequest(jsonData,param,callback){
   console.log("Trying Post Request : "+serverUrl);
   var xhr = getXMLHttpRequest();
   xhr.onreadystatechange = function() {
