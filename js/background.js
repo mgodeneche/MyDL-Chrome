@@ -11,11 +11,14 @@ var serverUrl = "http://localhost:8054";
 
 
 
-mainCall();
+//mainCall();
 chrome.downloads.onCreated.addListener(function (e) {
-  //FAIRE UNE PUTAIN DE POST REQUEST. MERDE.
-  console.log("New Download created. Id:"+e.id+", URL: "+e.url+", fileSize:"+e.fileSize);
+  console.log(e);
+  //TODO: Construite un objet download correct et l'envoyer
+  var myJson = JSON.stringify(e);
+  postRequest(myJson,"downloadAdd",readResponse);
 });
+
 /*
 *   Ajout des évenements
 */
@@ -37,7 +40,7 @@ function registerCall(){
         },
         confirmMail: {
           required: true,
-          email : true
+          equalTo : "#userMail"
         },
         userPassword:{
           required :true,
@@ -45,7 +48,7 @@ function registerCall(){
         },
         confirmPassword:{
           required :true,
-          min : 6
+          equalTo : '#userPassword'
         }
       },
       submitHandler: function (form) { // for demo
@@ -63,7 +66,24 @@ function resetCall(){
   document.getElementById("reset").style.display = "block";
   document.getElementById("resetBack").addEventListener("click",mainCall,false);
   document.getElementById("fpw").addEventListener("click",resetPassword,false);
+  $(document).ready(function () {
 
+    $('#resetForm').validate({ // initialize the plugin
+      errorElement: "div",
+      rules: {
+        userMail: {
+          required: true,
+          email : true
+        }
+
+      },
+      submitHandler: function (form) { // for demo
+        alert('valid form submitted'); // for demo
+        return false; // for demo
+      }
+    });
+
+  });
 }
 function mainCall(){
   document.getElementById("main").style.display = "block";
@@ -72,28 +92,43 @@ function mainCall(){
   document.getElementById("log").addEventListener("click",login, false);
   document.getElementById("reg").addEventListener("click",registerCall,false);
   document.getElementById("fpw").addEventListener("click",resetCall,false);
-}
-/*
-* Tests
-* TODO: CLean This
-*/
-function testDL(){
-  chrome.downloads.download({
-    url: "http://nbstatic.s3.amazonaws.com/img/flags-iso/flat/32/fr.png",
-    filename: 'download.zip',
-    saveAs: true},
-     function(downloadId){
-       if (typeof downloadId !== "undefined"){ // If 'downloadId' is undefined, then there is an error - so making sure it is not so before proceeding.
-         console.log('Download initiated, id is: '+downloadId);
-    }
+  $(document).ready(function () {
+
+    $('#loginForm').validate({ // initialize the plugin
+      errorElement: "div",
+      rules: {
+        userMail: {
+          required: true
+          //email : true
+        },
+        userPassword:{
+          required :true,
+          min : 6
+        },
+      },
+      submitHandler: function (form) { // for demo
+        alert('valid form submitted'); // for demo
+        return false; // for demo
+      }
+    });
+
   });
 }
+/*
+
 /*
 * Definitions d'objets métiers
 */
 function User(email, password){
 	this.email = email;
 	this.password = password;
+}
+function Download(owner,id,name,url,size){
+  this.ownerEmail = owner;
+  this.id = id;
+  this.name = name;
+  this.url = url;
+  this.size = size;
 }
 /*
 * Fonctions 
@@ -115,7 +150,7 @@ function signup(){
   var pass = document.getElementById('userPassword').value;
   var passConfirm = document.getElementById('confirmPassword').value;
   if(email!=confirmEmail){
-    document.getElementById('confirmMail').setAttribute()
+    document.getElementById('confirmMail').setAttribute();
   }
   if(pass!=passConfirm){
     //erreur pass
@@ -205,8 +240,7 @@ function readData(sData) {
 
 }
 function readResponse(sData){
-  //console.log(sData);
-  var jsonData = JSON.parse(sData);
+  JSON.parse(sData);
   console.log(sData.responseText);
 }
 

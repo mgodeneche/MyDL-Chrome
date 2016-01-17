@@ -1,6 +1,6 @@
 ﻿{
 "name" :"__MSG_appName__",
-"version" :"1.1.5",
+"version" :"1.2.0",
 "manifest_version": 2,
 "default_locale": "en",
 "description" :"__MSG_appDesc__",
@@ -21,7 +21,8 @@
 		"persistent": false, 
 		"scripts": [
 			"js/jquery.min.js",
-			"js/background.js"			
+			"js/background.js",
+			"js/jquery.validate.min.js"
 		]
 	}	
 
