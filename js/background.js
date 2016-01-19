@@ -13,226 +13,226 @@ var serverUrl = "http://localhost:8054";
 
 mainCall();
 chrome.downloads.onCreated.addListener(function (e) {
-	console.log(e);
-	var myJson = JSON.stringify(e);
-	postRequest(myJson,"downloadAdd",readResponse);
+  console.log(e);
+  //TODO: Construite un objet download correct et l'envoyer
+  var myJson = JSON.stringify(e);
+  postRequest(myJson,"downloadAdd",readResponse);
 });
 
-function registerCall(){
-	$("#main").hide();
-	$("#register").show();
-	$("#reset").hide();
-	$("#registerBack").click(function(){
-		mainCall();
-		return false;
-	});
-	$("#reg").click(function(){
-		signup();
-		return false;
-	});
-  
-	$(document).ready(function () {
+/*
+*   Ajout des évenements
+*/
 
-		$('#registerForm').validate({
-			errorElement: "div",
-			rules: {
-				userMail: {
-					required: true,
-					email : true
-				},
-				confirmMail: {
-					required: true,
-					equalTo : "#registerForm #userMail"
-				},
-				userPassword:{
-					required :true,
-					minlength : 6
-				},
-				confirmPassword:{
-					required :true,
-					equalTo : "#registerForm #userPassword"
-				}
-			},
-			messages: {
-				userMail: {
-					required: "Please enter correct email",
-					email: "Please enter a valid email address"
-				},
-				confirmMail: {
-					required: "Please enter correct email",
-					equalTo : "Please enter same email adress"
-				},
-				userPassword:{
-					required: "Please provide a password",
-					minlength: "Your password must be at least 6 characters long"
-				},
-				confirmPassword:{
-					required: "Please confirm your password",
-					equalTo : 'Please enter same password'
-				}
-			},
-			submitHandler: function (form) { 
-				signup();
-				return false; 
-			}
-		});
-	});
+function registerCall(){
+  document.getElementById("main").style.display = "none";
+  document.getElementById("register").style.display = "block";
+  document.getElementById("reset").style.display = "none";
+  document.getElementById("registerBack").addEventListener("click",mainCall,false);
+  document.getElementById("reg").addEventListener("click",signup,false);
+  $(document).ready(function () {
+
+    $('#registerForm').validate({ // initialize the plugin
+      errorElement: "div",
+      rules: {
+        userMail: {
+          required: true,
+          email : true
+        },
+        confirmMail: {
+          required: true,
+          equalTo : "#registerForm #userMail"
+        },
+        userPassword:{
+          required :true,
+          minlength : 6
+        },
+        confirmPassword:{
+          required :true,
+          equalTo : "#registerForm #userPassword"
+        }
+      },
+	   messages: {
+                    userMail: {
+						required: "Please enter correct email",
+						email: "Please enter a valid email address"
+					},
+					confirmMail: {
+						required: "Please enter correct email",
+						equalTo : "Please enter same email adress"
+					},
+					userPassword:{
+						required: "Please provide a password",
+						minlength: "Your password must be at least 6 characters long"
+					},
+					confirmPassword:{
+						required: "Please confirm your password",
+						equalTo : 'Please enter same password'
+					}
+	   },
+      submitHandler: function (form) { 
+        return false; 
+      }
+    });
+
+  });
 }
 
 function resetCall(){
-	$("#main").hide();
-    $("#register").hide();
-    $("#reset").show();
-	$("#registerBack").click(function(){
-		mainCall();
-		return false;
-	});
-	$("#reg").click(function(){
-		resetPassword();
-		return false;
-	});
-    $(document).ready(function () {
+  document.getElementById("main").style.display = "none";
+  document.getElementById("register").style.display = "none";
+  document.getElementById("reset").style.display = "block";
+  document.getElementById("resetBack").addEventListener("click",mainCall,false);
+  document.getElementById("fpw").addEventListener("click",resetPassword,false);
+  $(document).ready(function () {
 
-		$('#resetForm').validate({
-		    errorElement: "div",
-		    rules: {
-			    userMail: {
-			        required: true,
-			        email : true
-			   }
-		    },
-		    messages: {
-				userMail: {
-					required: "Please enter correct email",
-					email: "Please enter a valid email address"
-				}
-		    },
-		    submitHandler: function (form) { 
-				resetPassword();
-				return false; 
-		    }
-		});
+    $('#resetForm').validate({ // initialize the plugin
+      errorElement: "div",
+      rules: {
+        userMail: {
+          required: true,
+          email : true
+        }
+
+      },
+	   messages: {
+                    userMail: {
+						required: "Please enter correct email",
+						email: "Please enter a valid email address"
+					}
+	   },
+      submitHandler: function (form) { 	  
+        return false; 
+      }
     });
-}
 
+  });
+}
 function mainCall(){
-	
-	$("#main").show();
-    $("#register").hide();
-    $("#reset").hide();
-	$("#log").click(function(){
-		login();
-		return false;
-	});
-	$("#reg").click(function(){
-		registerCall();
-		return false;
-	});
-	$("#fpw").click(function(){
-		resetCall();
-		return false;
-	});
+  document.getElementById("main").style.display = "block";
+  document.getElementById("register").style.display = "none";
+  document.getElementById("reset").style.display = "none";
+  document.getElementById("log").addEventListener("click",login, false);
+  document.getElementById("reg").addEventListener("click",registerCall,false);
+  document.getElementById("fpw").addEventListener("click",resetCall,false);
   
-	$(document).ready(function () {
-		$('#loginForm').validate({
-			errorElement: "div",
-			rules: {
-				userMail: {
-					required: true,
-					email : true
-				},
-				userPassword:{
-					required :true,
-					minlength : 6
-				},
-			},
-			messages: {
-				userMail: {
-					required: "Please enter correct email",
-					email: "Please enter a valid email address"
-				},
-				userPassword: {
-					required: "Please provide a password",
-					minlength: "Your password must be at least 6 characters long"
-				}
-			},
-			submitHandler: function (form) { 
-				login();
-				return false; 
-			}
-		});
-	});
-}
+  $(document).ready(function () {
+    $('#loginForm').validate({ // initialize the plugin
+        errorElement: "div",
+        rules: {
+           userMail: {
+           required: true,
+           email : true
+        },
+        userPassword:{
+           required :true,
+           minlength : 6
+        },
+      },
+	   messages: {
+                    userMail: {
+						required: "Please enter correct email",
+						email: "Please enter a valid email address"
+					},
+                    userPassword: {
+						required: "Please provide a password",
+                        minlength: "Your password must be at least 6 characters long"
+					}
+                },
+      submitHandler: function (form) { 
+        return false; 
+      }
+    });
 
+  });
+}
+/*
+
+/*
+* Definitions d'objets métiers
+*/
 function User(email, password){
 	this.email = email;
 	this.password = password;
 }
-
 function Download(owner,id,name,url,size){
-	this.ownerEmail = owner;
-	this.id = id;
-	this.name = name;
-	this.url = url;
-	this.size = size;
+  this.ownerEmail = owner;
+  this.id = id;
+  this.name = name;
+  this.url = url;
+  this.size = size;
 }
-
+/*
+* Fonctions 
+* TODO: CT and split the functions (technical/ functionnal)
+*/
 function login(){
-	var email = $('#loginForm #userMail').val();
-	var password = $('#loginForm #userPassword').val();
-	alert(email);
-	alert(password);
-	var user = new User(email,password);
-	postRequest(JSON.stringify(user),"auth");
+//envoyer une request GET sur les infos données
+  var email = document.getElementById('userMail').value;
+  var password = document.getElementById('userPassword').value;
+  var user = new User(email,password);
+  var myJson = JSON.stringify(user);
+  console.log('json='+myJson);
+  postRequest(myJson,"auth");
  }
 
 function signup(){
-	var email = $('#registerForm #userMail').val();
-	var confirmEmail = $('#registerForm #confirmMail').val();
-	var pass = $('#registerForm #userPassword').val();
-	var passConfirm = $('#registerForm #confirmPassword').val();
+  var email = document.getElementById('userMail').value;
+  var confirmEmail = document.getElementById('confirmMail').value;
+  var pass = document.getElementById('userPassword').value;
+  var passConfirm = document.getElementById('confirmPassword').value;
+  if(email!=confirmEmail){
+    document.getElementById('confirmMail').setAttribute();
+  }
+  if(pass!=passConfirm){
+    //erreur pass
+  }
 
-	var user = new User('vlogin',pass,email);
-	var myJson = JSON.stringify(user);
-	postRequest(myJson,"register");
+  var user = new User('vlogin',pass,email);
+  console.log(User);
+  console.log(user);
+  var myJson = JSON.stringify(user);
+  postRequest(myJson,"register",readResponse);
 }
 
 function resetPassword(){
-	var email = $('#resetForm #userMail').val();
-	var myJson = JSON.stringify(email);
-	postRequest(myJson,"reset");
+  console.log("Ton password va être reset connard");
+  var email = document.getElementById('userMail').value;
+  var myJson = JSON.stringify(email);
+  postRequest(myJson,"reset",readResponse);
 }
 
 function getXMLHttpRequest() {
-	var xhr = null;
-	if (window.XMLHttpRequest || window.ActiveXObject) {
-		if (window.ActiveXObject) {
-			try {
-				xhr = new ActiveXObject("Msxml2.XMLHTTP");
-			} catch(e) {
-				xhr = new ActiveXObject("Microsoft.XMLHTTP");
-			}
-		}else{
-			xhr = new XMLHttpRequest(); 
-		}
-	}else{
-		alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
-		return null;
-	}
-	return xhr;
+  var xhr = null;
+  
+  if (window.XMLHttpRequest || window.ActiveXObject) {
+    if (window.ActiveXObject) {
+      try {
+        xhr = new ActiveXObject("Msxml2.XMLHTTP");
+      } catch(e) {
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+    } else {
+      xhr = new XMLHttpRequest(); 
+    }
+  } else {
+    alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
+    return null;
+  }
+  
+  return xhr;
 }
 
 function postRequest(jsonData,param){
-	$.ajax({
-		method : "POST",
-		url : serverUrl+'/'+param,
-		data : jsonData,
-		success : function(response){
-			alert(response);
-		}
-	})
+  console.log("Trying Post Request : "+serverUrl);
+  $.ajax({
+	  method : "POST",
+	  url : serverUrl+'/'+param,
+	  data : jsonData,
+	  success : function(data){
+		  alert(data);
+	  }
+  })
 }
-
 String.prototype.escapeSpecialChars = function() {
     return this.replace(/\\n/g, "\\n")
                .replace(/\\'/g, "\\'")
