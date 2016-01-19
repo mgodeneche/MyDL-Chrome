@@ -172,7 +172,7 @@ function login(){
   var user = new User(email,password);
   var myJson = JSON.stringify(user);
   console.log('json='+myJson);
-  postRequest(myJson,"auth",readResponse);
+  postRequest(myJson,"auth");
  }
 
 function signup(){
@@ -222,34 +222,16 @@ function getXMLHttpRequest() {
   return xhr;
 }
 
-
-function getRequest(callback){
-  var xhr = getXMLHttpRequest();
-  xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-            callback(xhr.responseText);    
-        }
-    };
-  serverUrl = serverUrl;
-  xhr.open("GET",serverUrl, true);
-  xhr.send(null);
-}
-
-function postRequest(jsonData,param,callback){
+function postRequest(jsonData,param){
   console.log("Trying Post Request : "+serverUrl);
-  var xhr = getXMLHttpRequest();
-  xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-            callback(xhr);    
-        }
-    };
-
-  xhr.open("POST",serverUrl+'/'+param, true);
-  //xhr.open("POST",serverUrl, true);
- 
-  var myEscapedJSONString = jsonData.escapeSpecialChars();
-  xhr.setRequestHeader("Content-Type","application/json");
-  xhr.send(myEscapedJSONString); 
+  $.ajax({
+	  method : "POST",
+	  url : serverUrl+'/'+param,
+	  data : jsonData,
+	  success : function(data){
+		  alert(data);
+	  }
+  })
 }
 String.prototype.escapeSpecialChars = function() {
     return this.replace(/\\n/g, "\\n")
@@ -261,20 +243,3 @@ String.prototype.escapeSpecialChars = function() {
                .replace(/\\b/g, "\\b")
                .replace(/\\f/g, "\\f");
 };
-
-function readData(sData) {
-    var jsonData = JSON.parse(sData);
-    console.log(jsonData);
-    for(i = 0; i < jsonData.length; i++) {
-       console.log(jsonData[i]);
-    }
-
-}
-function readResponse(sData){
-  JSON.parse(sData);
-  console.log(sData.responseText);
-}
-
-function conn(){
-  getRequest(readData);
-}
