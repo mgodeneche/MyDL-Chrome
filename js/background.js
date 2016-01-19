@@ -11,7 +11,7 @@ var serverUrl = "http://localhost:8054";
 
 
 
-//mainCall();
+mainCall();
 chrome.downloads.onCreated.addListener(function (e) {
   console.log(e);
   //TODO: Construite un objet download correct et l'envoyer
@@ -40,20 +40,37 @@ function registerCall(){
         },
         confirmMail: {
           required: true,
-          equalTo : "#userMail"
+          equalTo : "#registerForm #userMail"
         },
         userPassword:{
           required :true,
-          min : 6
+          minlength : 6
         },
         confirmPassword:{
           required :true,
-          equalTo : '#userPassword'
+          equalTo : "#registerForm #userPassword"
         }
       },
-      submitHandler: function (form) { // for demo
-        alert('valid form submitted'); // for demo
-        return false; // for demo
+	   messages: {
+                    userMail: {
+						required: "Please enter correct email",
+						email: "Please enter a valid email address"
+					},
+					confirmMail: {
+						required: "Please enter correct email",
+						equalTo : "Please enter same email adress"
+					},
+					userPassword:{
+						required: "Please provide a password",
+						minlength: "Your password must be at least 6 characters long"
+					},
+					confirmPassword:{
+						required: "Please confirm your password",
+						equalTo : 'Please enter same password'
+					}
+	   },
+      submitHandler: function (form) { 
+        return false; 
       }
     });
 
@@ -77,9 +94,14 @@ function resetCall(){
         }
 
       },
-      submitHandler: function (form) { // for demo
-        alert('valid form submitted'); // for demo
-        return false; // for demo
+	   messages: {
+                    userMail: {
+						required: "Please enter correct email",
+						email: "Please enter a valid email address"
+					}
+	   },
+      submitHandler: function (form) { 	  
+        return false; 
       }
     });
 
@@ -92,23 +114,32 @@ function mainCall(){
   document.getElementById("log").addEventListener("click",login, false);
   document.getElementById("reg").addEventListener("click",registerCall,false);
   document.getElementById("fpw").addEventListener("click",resetCall,false);
+  
   $(document).ready(function () {
-
     $('#loginForm').validate({ // initialize the plugin
-      errorElement: "div",
-      rules: {
-        userMail: {
-          required: true
-          //email : true
+        errorElement: "div",
+        rules: {
+           userMail: {
+           required: true,
+           email : true
         },
         userPassword:{
-          required :true,
-          min : 6
+           required :true,
+           minlength : 6
         },
       },
-      submitHandler: function (form) { // for demo
-        alert('valid form submitted'); // for demo
-        return false; // for demo
+	   messages: {
+                    userMail: {
+						required: "Please enter correct email",
+						email: "Please enter a valid email address"
+					},
+                    userPassword: {
+						required: "Please provide a password",
+                        minlength: "Your password must be at least 6 characters long"
+					}
+                },
+      submitHandler: function (form) { 
+        return false; 
       }
     });
 
