@@ -171,7 +171,6 @@ function login(){
   var password = document.getElementById('userPassword').value;
   var user = new User(email,password);
   var myJson = JSON.stringify(user);
-  console.log('json='+myJson);
   postRequest(myJson,"auth");
  }
 
