@@ -13,10 +13,9 @@ var serverUrl = "http://localhost:8054";
 
 mainCall();
 chrome.downloads.onCreated.addListener(function (e) {
-  console.log(e);
-  //TODO: Construite un objet download correct et l'envoyer
-  var myJson = JSON.stringify(e);
-  postRequest(myJson,"downloadAdd",readResponse);
+	console.log(e);
+	var myJson = JSON.stringify(e);
+  postRequest(myJson,"downloadAdd");
 });
 
 /*
@@ -29,9 +28,9 @@ function registerCall(){
   document.getElementById("reset").style.display = "none";
   document.getElementById("registerBack").addEventListener("click",mainCall,false);
   document.getElementById("reg").addEventListener("click",signup,false);
+  
   $(document).ready(function () {
-
-    $('#registerForm').validate({ // initialize the plugin
+    $('#registerForm').validate({
       errorElement: "div",
       rules: {
         userMail: {
@@ -70,7 +69,7 @@ function registerCall(){
 					}
 	   },
       submitHandler: function (form) { 
-        return false; 
+        signup();
       }
     });
 
@@ -83,8 +82,8 @@ function resetCall(){
   document.getElementById("reset").style.display = "block";
   document.getElementById("resetBack").addEventListener("click",mainCall,false);
   document.getElementById("fpw").addEventListener("click",resetPassword,false);
+  
   $(document).ready(function () {
-
     $('#resetForm').validate({ // initialize the plugin
       errorElement: "div",
       rules: {
@@ -101,7 +100,7 @@ function resetCall(){
 					}
 	   },
       submitHandler: function (form) { 	  
-        return false; 
+        resetPassword();
       }
     });
 
@@ -111,12 +110,11 @@ function mainCall(){
   document.getElementById("main").style.display = "block";
   document.getElementById("register").style.display = "none";
   document.getElementById("reset").style.display = "none";
-  document.getElementById("log").addEventListener("click",login, false);
   document.getElementById("reg").addEventListener("click",registerCall,false);
   document.getElementById("fpw").addEventListener("click",resetCall,false);
   
   $(document).ready(function () {
-    $('#loginForm').validate({ // initialize the plugin
+    $('#loginForm').validate({
         errorElement: "div",
         rules: {
            userMail: {
@@ -139,7 +137,8 @@ function mainCall(){
 					}
                 },
       submitHandler: function (form) { 
-        return false; 
+		if ($("#userMail").val() != "" && $("#userPassword").val() != "")
+        login();
       }
     });
 
@@ -161,12 +160,9 @@ function Download(owner,id,name,url,size){
   this.url = url;
   this.size = size;
 }
-/*
-* Fonctions 
-* TODO: CT and split the functions (technical/ functionnal)
-*/
+
 function login(){
-//envoyer une request GET sur les infos données
+  console.log("authentication ...");
   var email = document.getElementById('userMail').value;
   var password = document.getElementById('userPassword').value;
   var user = new User(email,password);
@@ -175,50 +171,24 @@ function login(){
  }
 
 function signup(){
+  console.log("register ...");
   var email = document.getElementById('userMail').value;
   var confirmEmail = document.getElementById('confirmMail').value;
   var pass = document.getElementById('userPassword').value;
   var passConfirm = document.getElementById('confirmPassword').value;
-  if(email!=confirmEmail){
-    document.getElementById('confirmMail').setAttribute();
-  }
-  if(pass!=passConfirm){
-    //erreur pass
-  }
 
   var user = new User('vlogin',pass,email);
   console.log(User);
   console.log(user);
   var myJson = JSON.stringify(user);
-  postRequest(myJson,"register",readResponse);
+  postRequest(myJson,"register");
 }
 
 function resetPassword(){
-  console.log("Ton password va être reset connard");
+  console.log("Password reset ...");
   var email = document.getElementById('userMail').value;
   var myJson = JSON.stringify(email);
-  postRequest(myJson,"reset",readResponse);
-}
-
-function getXMLHttpRequest() {
-  var xhr = null;
-  
-  if (window.XMLHttpRequest || window.ActiveXObject) {
-    if (window.ActiveXObject) {
-      try {
-        xhr = new ActiveXObject("Msxml2.XMLHTTP");
-      } catch(e) {
-        xhr = new ActiveXObject("Microsoft.XMLHTTP");
-      }
-    } else {
-      xhr = new XMLHttpRequest(); 
-    }
-  } else {
-    alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
-    return null;
-  }
-  
-  return xhr;
+  postRequest(myJson,"reset");
 }
 
 function postRequest(jsonData,param){
@@ -227,9 +197,47 @@ function postRequest(jsonData,param){
 	  method : "POST",
 	  url : serverUrl+'/'+param,
 	  data : jsonData,
-	  success : function(data){
-		  alert(data);
-	  }
+	   success: function(data, textStatus, xhr) {
+			switch(xhr.status){
+				case 200 :
+					document.getElementById("main").style.display = "none";
+					document.getElementById("register").style.display = "none";
+					document.getElementById("reset").style.display = "none";
+					$("#authenticated").show();
+				break;
+				case 201 :
+					document.getElementById("main").style.display = "none";
+					document.getElementById("register").style.display = "none";
+					document.getElementById("reset").style.display = "none";
+					$("#registerDone").show();
+				break;
+				case 202 :
+					document.getElementById("main").style.display = "none";
+					document.getElementById("register").style.display = "none";
+					document.getElementById("reset").style.display = "none";
+					$("#activationDone").show();
+				break;
+			}
+		},
+		error: function(xhr, textStatus){
+			switch(xhr.status){
+				case 401 : 
+					document.getElementById("errorLogin").style.display = "block";
+					$("#loginForm #userMail").val("");
+					$("#loginForm userPassword").val("");
+				break;
+				case 409 :
+					document.getElementById("errorRegister").style.display = "block";
+					$("#registerForm #userMail").val("");
+					$("#registerForm #confirmMail").val("");
+					$("#registerForm #userPassword").val("");
+					$("#registerForm #confirmPassword").val("");
+				break;
+				case 403 :
+					document.getElementById("errorReset").style.display = "block";
+					$("#resetForm #userMail").val("");
+			}
+		}
   })
 }
 String.prototype.escapeSpecialChars = function() {

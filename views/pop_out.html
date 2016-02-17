@@ -15,7 +15,7 @@
 <!-- DONT EDIT ABOVE -->
 <div id='main' class="visible">
     <form method='post' id="loginForm">
-
+		<p id="errorLogin" style="color:red;display:none;">Erreur : mail ou mot de passe incorrect</p>
         <ul>
             <li>
 				<label for="userMail" class="errorLabel"></label>
@@ -25,9 +25,9 @@
                 <input type="password" name="userPassword" id="userPassword" placeholder="password" required>
             </li>
             <li>
-                <input type="submit" class="blue" id="log" value="Login"> 
-                <input type="submit" class="green" id="reg" value="Register">
-                <input type="submit" class="red" id="fpw" value="Forgot?">
+                <button class="blue" id="log">Login</button> 
+                <button class="green" id="reg">Register</button>
+                <button class="red" id="fpw">Forgot ?</button>
             </li>
         </ul>
     </form>
@@ -48,26 +48,35 @@
                 <input type="password" name="confirmPassword" id="confirmPassword" placeholder="confirm your Password" required>
             </li>
             <li>
-                <input type="submit" class="blue" id="registerBack" value="Back">   
-                <input type="submit" class="green" id="reg" value="Register">
+                <button class="blue" id="registerBack">Back</button>   
+                <button class="green" id="reg">Register</button>
             </li>
         </ul>
     </form>
 </div>
 <div id='reset' style='display:none'>
     <form method='post' id="resetForm">
+		<p id="errorReset" style="color:red;display:none;">Erreur : mail ou mot de passe incorrect</p>
         <ul>
             <li>
                 <input type="email" name="userMail" id="userMail" placeholder="yourname@email.com" required>
             </li>
-                <input type="submit" class="blue" id="resetBack" value="Back">
-                <input type="submit" class="red" id="fpw" value="Reinitialiser">
+                <button class="blue" id="resetBack">Back</button>
+                <button class="red" id="fpw">New password</button>
             </li>
         </ul>
     </form>
 </div>
 <div id='authenticated' style='display:none'>
     <img src="../public/auth-ok.png">
+</div>
+<div id='registerDone' style='display:none;color:white;font-weight:bold;'>
+    <img src="../public/auth-ok.png">
+	<p>To finish your register, a meil has been sent to your mail adress. Check your spam directory</p>
+</div>
+<div id='Done' style='display:none'>
+    <img src="../public/auth-ok.png">
+	<p>Account successfully activated</p>
 </div>
 <script src="../js/background.js"></script>
   
